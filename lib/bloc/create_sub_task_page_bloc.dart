@@ -58,6 +58,7 @@ class CreateSubTaskPageBloc extends ChangeNotifier{
     });
     if(!context.mounted) return;
     Navigator.pop(context);
+    Navigator.popUntil(context, ModalRoute.withName('home'));
     context.navigateToNextScreenReplace(context, const HomePage());
   }
 
