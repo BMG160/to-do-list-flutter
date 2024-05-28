@@ -3,10 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:provider/provider.dart';
 import 'package:to_do_list/bloc/theme_bloc.dart';
-import 'package:to_do_list/firebase_options.dart';
 import 'package:to_do_list/pages/home_page.dart';
 import 'package:to_do_list/pages/login_page.dart';
-import 'package:to_do_list/pages/registration_page.dart';
 import 'package:to_do_list/pages/welcome_page.dart';
 import 'package:to_do_list/theme/theme.dart';
 
@@ -44,7 +42,7 @@ class MyApp extends StatelessWidget {
           'home' : (BuildContext context) => const HomePage(),
           'login' : (BuildContext context) => const LoginPage()
         },
-        home: WelcomePage(),
+        home: const WelcomePage(),
       ),
     );
   }
