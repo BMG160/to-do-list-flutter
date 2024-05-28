@@ -13,7 +13,7 @@ class EasyElevatedButtonWidget extends StatelessWidget {
     return ElevatedButton(
         style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(buttonColor), maximumSize: MaterialStatePropertyAll(Size(MediaQuery.of(context).size.width, 40.0)), minimumSize: MaterialStatePropertyAll(Size(MediaQuery.of(context).size.width, 40.0))),
         onPressed: onPressed,
-        child: EasyTextWidget(text: buttonText ?? '', textColor: textColor, textSize: 15, fontWeight: FontWeight.normal)
+        child: EasyTextWidget(text: buttonText, textColor: textColor, textSize: 15, fontWeight: FontWeight.normal)
     );
   }
 }
