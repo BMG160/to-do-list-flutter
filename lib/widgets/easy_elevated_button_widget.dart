@@ -11,7 +11,7 @@ class EasyElevatedButtonWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ElevatedButton(
-        style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(buttonColor), maximumSize: MaterialStatePropertyAll(Size(MediaQuery.of(context).size.width, 50.0)), minimumSize: MaterialStatePropertyAll(Size(MediaQuery.of(context).size.width, 50.0))),
+        style: ButtonStyle(backgroundColor: MaterialStatePropertyAll(buttonColor), maximumSize: MaterialStatePropertyAll(Size(MediaQuery.of(context).size.width, 40.0)), minimumSize: MaterialStatePropertyAll(Size(MediaQuery.of(context).size.width, 40.0))),
         onPressed: onPressed,
         child: EasyTextWidget(text: buttonText ?? '', textColor: textColor, textSize: 15, fontWeight: FontWeight.normal)
     );

@@ -11,6 +11,6 @@ class EasyTextWidget extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Text(text, style: GoogleFonts.lato(textStyle: TextStyle(color: textColor, fontSize: textSize, fontWeight: fontWeight, decoration: decoration, decorationColor: Colors.white, decorationStyle: TextDecorationStyle.solid)),);
+    return Text(text, style: GoogleFonts.lato(textStyle: TextStyle(color: textColor, fontSize: textSize, fontWeight: fontWeight, decoration: decoration, decorationColor: Theme.of(context).colorScheme.primary, decorationStyle: TextDecorationStyle.solid)),);
   }
 }

@@ -1,4 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
+import 'package:to_do_list/bloc/login_page_bloc.dart';
+import 'package:to_do_list/pages/home_page.dart';
+import 'package:to_do_list/pages/registration_page.dart';
+import 'package:to_do_list/utils/extension.dart';
 
 import 'package:to_do_list/widgets/easy_elevated_button_widget.dart';
 import 'package:to_do_list/widgets/easy_text_form_field_widget.dart';
@@ -11,70 +16,109 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController emailController = TextEditingController();
-    return Container(
-      width: MediaQuery.of(context).size.width,
-      height: MediaQuery.of(context).size.height,
-      decoration: const BoxDecoration(
-        image: DecorationImage(image: AssetImage('assets/background.jpg'))
-      ),
-      child: Scaffold(
-        backgroundColor: Colors.transparent,
-        body: Stack(
-          children: [
-            Positioned(
-                top: 220,
+    return ChangeNotifierProvider<LoginPageBloc>(
+        create: (_) => LoginPageBloc(context),
+        child: Selector<LoginPageBloc, bool>(
+          selector: (_, bloc) => bloc.getIsLogin,
+          builder: (_, isLogin, child) => Scaffold(
+              backgroundColor: Theme.of(context).colorScheme.background,
+              body: (isLogin) ? const HomePage() : SingleChildScrollView(
+                physics: const BouncingScrollPhysics(),
+                scrollDirection: Axis.vertical,
                 child: Container(
-                  margin: const EdgeInsets.symmetric(horizontal: 30),
-                  padding: const EdgeInsets.only(left: 20, top: 60, right: 20, bottom: 10),
-                  width: 350,
-                  height: 500,
-                  decoration: const BoxDecoration(
-                    color: Color.fromRGBO(49, 54, 63, 100),
-                    borderRadius: BorderRadius.all(Radius.circular(20))
-                  ),
+                  width: MediaQuery.of(context).size.width,
+                  height: MediaQuery.of(context).size.height,
+                  padding: const EdgeInsets.all(20),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Center(
-                        child: EasyTextWidget(text: 'LOGIN', textColor: Colors.white, textSize: 25, fontWeight: FontWeight.bold),
+                      SizedBox(
+                        height: MediaQuery.of(context).size.height*0.1,
+                      ),
+                      Image.asset('assets/welcome.png'),
+                      const SizedBox(
+                        height: 50,
+                      ),
+                      Center(
+                        child: EasyTextWidget(text: 'LOGIN', textColor: Theme.of(context).colorScheme.primary, textSize: 25, fontWeight: FontWeight.bold),
                       ),
                       const VerticalSpacingWidget(height: 20),
-                      const EasyTextWidget(text: 'Email:', textColor: Colors.white, textSize: 15, fontWeight: FontWeight.bold),
+                      EasyTextWidget(text: 'Email:', textColor: Theme.of(context).colorScheme.primary, textSize: 15, fontWeight: FontWeight.bold),
                       const VerticalSpacingWidget(height: 10),
-                      EasyTextFormFieldWidget(controller: emailController, textInputType: TextInputType.emailAddress, textInputAction: TextInputAction.next, hintText: 'Enter your email address here.', prefixIcon: const Icon(Icons.email, color: Colors.white,),),
+                      Selector<LoginPageBloc, TextEditingController>(
+                        selector: (_, bloc) => bloc.getEmailController,
+                        builder: (_, emailController, child) => EasyTextFormFieldWidget(controller: emailController, textInputType: TextInputType.emailAddress, textInputAction: TextInputAction.next, hintText: 'Enter your email address here.', prefixIcon: Icon(Icons.email, color: Theme.of(context).colorScheme.primary,),),
+                      ),
                       const VerticalSpacingWidget(height: 20),
-                      const EasyTextWidget(text: 'Password:', textColor: Colors.white, textSize: 15, fontWeight: FontWeight.bold),
+                      EasyTextWidget(text: 'Password:', textColor: Theme.of(context).colorScheme.primary, textSize: 15, fontWeight: FontWeight.bold),
                       const VerticalSpacingWidget(height: 10),
-                      EasyTextFormFieldWidget(controller: emailController, textInputType: TextInputType.emailAddress, textInputAction: TextInputAction.next, hintText: 'Enter your password here.', prefixIcon: const Icon(Icons.lock, color: Colors.white,),),
+                      Selector<LoginPageBloc, TextEditingController>(
+                        selector: (_, bloc) => bloc.getPasswordController,
+                        builder: (_, passwordController, child) => Selector<LoginPageBloc, bool>(
+                          selector: (_, bloc) => bloc.getPasswordVisibility,
+                          builder: (_, passwordVisibility, child) => EasyTextFormFieldWidget(obscureText: passwordVisibility, controller: passwordController, textInputType: TextInputType.visiblePassword, textInputAction: TextInputAction.done, hintText: 'Enter your password here.', prefixIcon: Icon(Icons.lock, color: Theme.of(context).colorScheme.primary,), suffixIcon: PasswordVisibilityButtonView(passwordVisibility: passwordVisibility),),
+                        ),
+                      ),
+                      const VerticalSpacingWidget(height: 30),
+                      const LoginButtonView(),
                       const VerticalSpacingWidget(height: 20),
-                      const EasyElevatedButtonWidget(buttonText: 'LOGIN', textColor: Colors.white, buttonColor: Color.fromRGBO(118, 171, 174, 100)),
-                      const VerticalSpacingWidget(height: 20),
-                      const Row(
+                      Row(
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          EasyTextWidget(text: 'Register new account?', textColor: Colors.white, textSize: 15, fontWeight: FontWeight.normal),
-                          HorizontalSpacingWidget(width: 10),
-                          EasyTextWidget(text: 'CLICK HERE', textColor: Colors.white, textSize: 15, fontWeight: FontWeight.bold, decoration: TextDecoration.underline,)
+                          EasyTextWidget(text: 'Register new account?', textColor: Theme.of(context).colorScheme.primary, textSize: 15, fontWeight: FontWeight.normal),
+                          const HorizontalSpacingWidget(width: 10),
+                          GestureDetector(
+                            onTap: (){
+                              context.navigateToNextScreenReplace(context, const RegistrationPage(user: null,));
+                            },
+                            child: EasyTextWidget(text: 'CLICK HERE', textColor: Theme.of(context).colorScheme.primary, textSize: 15, fontWeight: FontWeight.bold, decoration: TextDecoration.underline),
+                          )
                         ],
                       )
                     ],
                   ),
-                )
-            ),
-            Positioned(
-              top: 125,
-              child: SizedBox(
-                  width: MediaQuery.of(context).size.width,
-                  height: 150,
-                  child: Image.asset('assets/doggy.png')
-              ),
-            ),
-          ],
-        )
-      ),
+                ),
+              )
+          ),
+        ),
     );
   }
 }
+
+class PasswordVisibilityButtonView extends StatelessWidget {
+  final bool passwordVisibility;
+  const PasswordVisibilityButtonView({super.key, required this.passwordVisibility});
+
+  @override
+  Widget build(BuildContext context) {
+    return IconButton(
+        onPressed: (){
+          context.read<LoginPageBloc>().togglePasswordVisibility();
+        },
+        icon: Icon(
+            (passwordVisibility) ? Icons.visibility: Icons.visibility_off,
+            color: Theme.of(context).colorScheme.primary,
+        )
+    );
+  }
+}
+
+
+class LoginButtonView extends StatelessWidget {
+  const LoginButtonView({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return EasyElevatedButtonWidget(
+      buttonText: 'LOGIN',
+      textColor: Theme.of(context).colorScheme.background,
+      buttonColor: Theme.of(context).colorScheme.primary,
+      onPressed: (){
+        context.read<LoginPageBloc>().userLogin(context);
+      },
+    );
+  }
+}
+

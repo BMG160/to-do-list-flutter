@@ -1,11 +1,32 @@
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:provider/provider.dart';
+import 'package:to_do_list/bloc/theme_bloc.dart';
+import 'package:to_do_list/firebase_options.dart';
+import 'package:to_do_list/pages/home_page.dart';
 import 'package:to_do_list/pages/login_page.dart';
+import 'package:to_do_list/pages/registration_page.dart';
+import 'package:to_do_list/pages/welcome_page.dart';
+import 'package:to_do_list/theme/theme.dart';
 
-void main() {
+
+void main() async{
   WidgetsFlutterBinding.ensureInitialized();
+
+  await Firebase.initializeApp(
+  );
   SystemChrome.setPreferredOrientations([DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
-  runApp(const MyApp());
+
+  runApp(
+    ChangeNotifierProvider<ThemeBloc>(
+      create: (_) => ThemeBloc(),
+      child: const MyApp(),
+    )
+  );
+}
+
+class DefaultFirebaseOptions {
 }
 
 class MyApp extends StatelessWidget {
@@ -13,9 +34,18 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      home: LoginPage(),
+    return Selector<ThemeBloc, ThemeData>(
+      selector: (_, bloc) => bloc.getThemeData,
+      builder: (_, themeData, child) => MaterialApp(
+        debugShowCheckedModeBanner: false,
+        theme: themeData,
+        darkTheme: darkMode,
+        routes: <String, WidgetBuilder> {
+          'home' : (BuildContext context) => const HomePage(),
+          'login' : (BuildContext context) => const LoginPage()
+        },
+        home: WelcomePage(),
+      ),
     );
   }
 }

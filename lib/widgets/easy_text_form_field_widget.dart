@@ -23,20 +23,20 @@ class EasyTextFormFieldWidget extends StatelessWidget {
       keyboardType: textInputType,
       textInputAction: textInputAction,
 
-      style: GoogleFonts.lato(textStyle: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.normal)),
+      style: GoogleFonts.lato(textStyle: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 15, fontWeight: FontWeight.normal)),
       decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: GoogleFonts.lato(textStyle: const TextStyle(color: Colors.white, fontSize: 15, fontWeight: FontWeight.normal)),
+          hintStyle: GoogleFonts.lato(textStyle: TextStyle(color: Theme.of(context).colorScheme.primary, fontSize: 15, fontWeight: FontWeight.normal)),
           enabledBorder: OutlineInputBorder(
               borderRadius: BorderRadius.circular(10),
-              borderSide: const BorderSide(color: Colors.white)
+              borderSide: BorderSide(color: Theme.of(context).colorScheme.primary)
           ),
           disabledBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.white),
+              borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
               borderRadius: BorderRadius.circular(10)
           ),
           focusedBorder: OutlineInputBorder(
-              borderSide: const BorderSide(color: Colors.white),
+              borderSide: BorderSide(color: Theme.of(context).colorScheme.primary),
               borderRadius: BorderRadius.circular(10)
           ),
           suffixIcon: suffixIcon,
